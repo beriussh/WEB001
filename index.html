@@ -3,28 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>간단한 웹 페이지</title>
+    <title>낱말 맞추기 게임</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .game-container {
+            text-align: center;
+            width: 300px;
+        }
+
+        .word {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 1rem;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            color: green;
+        }
+
+        .result.incorrect {
+            color: red;
+        }
+
+        .hint {
+            margin-top: 15px;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .instructions {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            color: #333;
+            line-height: 1.5;
+        }
+
+    </style>
 </head>
 <body>
-    <header>
-        <h1>나의 첫 번째 웹 페이지</h1>
-    </header>
-    
-    <nav>
-        <ul>
-            <li><a href="#">홈</a></li>
-            <li><a href="#">소개</a></li>
-            <li><a href="#">연락처</a></li>
-        </ul>
-    </nav>
 
-    <section>
-        <h2>환영합니다!</h2>
-        <p>여기는 간단한 웹 페이지 예제입니다.</p>
-    </section>
+<div class="game-container">
+    <h1>낱말 맞추기 게임</h1>
+    <div class="instructions">
+        <h2>게임 설명</h2>
+        <p>이 게임은 주어진 단어를 맞추는 간단한 게임입니다.</p>
+        <p>게임을 시작하면 빈 칸에 들어갈 단어가 주어집니다.</p>
+        <p>단어를 입력하고 "제출" 버튼을 클릭하세요. 틀리면 힌트가 제공됩니다.</p>
+        <p>단어를 맞추면 "정답!" 메시지가 나타나며, 계속 틀리면 점차적으로 힌트가 제공됩니다.</p>
+    </div>
 
-    <footer>
-        <p>&copy; 2025 나의 웹 사이트</p>
-    </footer>
+    <div class="word">_ _ _ _ _</div>
+    <input type="text" id="userInput" placeholder="여기에 단어를 입력하세요">
+    <button onclick="checkWord()">제출</button>
+    <div class="hint" id="hint">힌트: 이 단어는 과일입니다.</div>
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+    // 정답 단어
+    const correctWord = "사과";
+    const wordLength = correctWord.length;
+    const wordDisplay = document.querySelector(".word");
+
+    // 게임 시작 시 단어 길이만큼 _로 표시
+    wordDisplay.innerHTML = "_ ".repeat(wordLength);
+
+    // 힌트 제공 변수
+    let hintCount = 0;
+
+    // 낱말 맞추기 함수
+    function checkWord() {
+        const userInput = document.getElementById("userInput").value;
+        const resultElement = document.getElementById("result");
+        const hintElement = document.getElementById("hint");
+
+        if (userInput === correctWord) {
+            resultElement.textContent = "정답!";
+            resultElement.classList.remove("incorrect");
+            resultElement.classList.add("correct");
+        } else {
+            resultElement.textContent = "틀렸습니다. 다시 시도하세요.";
+            resultElement.classList.remove("correct");
+            resultElement.classList.add("incorrect");
+
+            // 힌트 점진적으로 제공
+            hintCount++;
+            if (hintCount === 1) {
+                hintElement.textContent = "힌트: 첫 번째 글자는 '사'입니다.";
+            } else if (hintCount === 2) {
+                hintElement.textContent = "힌트: 두 번째 글자는 '과'입니다.";
+            } else if (hintCount === 3) {
+                hintElement.textContent = "힌트: 이 단어는 과일입니다.";
+            }
+        }
+
+        // 입력창 초기화
+        document.getElementById("userInput").value = "";
+    }
+</script>
+
 </body>
 </html>
