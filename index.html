@@ -6,65 +6,106 @@
     <title>낱말 맞추기 게임</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
         }
 
         .game-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
             text-align: center;
-            width: 300px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .instructions {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.6;
         }
 
         .word {
             font-size: 2rem;
             font-weight: bold;
+            letter-spacing: 5px;
             margin-bottom: 20px;
+            color: #333;
         }
 
         input {
+            width: 100%;
             padding: 10px;
             font-size: 1rem;
-            text-align: center;
-            margin-top: 10px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            outline: none;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #4CAF50;
         }
 
         button {
-            padding: 10px 20px;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1rem;
             background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        .hint {
+            margin-top: 15px;
+            font-size: 1rem;
+            color: #777;
+            transition: color 0.3s ease;
         }
 
         .result {
             margin-top: 20px;
             font-size: 1.5rem;
-            color: green;
+            color: #4CAF50;
         }
 
         .result.incorrect {
             color: red;
         }
 
-        .hint {
-            margin-top: 15px;
-            font-size: 1rem;
-            color: #555;
-        }
-
-        .instructions {
-            margin-bottom: 20px;
-            font-size: 1.1rem;
-            color: #333;
-            line-height: 1.5;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
     </style>
@@ -76,13 +117,12 @@
     <div class="instructions">
         <h2>게임 설명</h2>
         <p>이 게임은 주어진 단어를 맞추는 간단한 게임입니다.</p>
-        <p>게임을 시작하면 빈 칸에 들어갈 단어가 주어집니다.</p>
-        <p>단어를 입력하고 "제출" 버튼을 클릭하세요. 틀리면 힌트가 제공됩니다.</p>
-        <p>단어를 맞추면 "정답!" 메시지가 나타나며, 계속 틀리면 점차적으로 힌트가 제공됩니다.</p>
+        <p>단어를 입력하고 "제출" 버튼을 클릭하세요.</p>
+        <p>틀리면 힌트가 제공됩니다. 정답을 맞추면 "정답!"이 표시됩니다.</p>
     </div>
 
     <div class="word">_ _ _ _ _</div>
-    <input type="text" id="userInput" placeholder="여기에 단어를 입력하세요">
+    <input type="text" id="userInput" placeholder="단어를 입력하세요" autofocus>
     <button onclick="checkWord()">제출</button>
     <div class="hint" id="hint">힌트: 이 단어는 과일입니다.</div>
     <div class="result" id="result"></div>
