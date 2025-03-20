@@ -119,11 +119,8 @@
         
         <div id="hint"></div> <!-- 힌트를 표시하는 부분 -->
         
-        <div class="word-container">
-            <span class="blank">_</span>
-            <span class="blank">_</span>
-            <span class="blank">_</span>
-            <span class="blank">_</span>
+        <div class="word-container" id="word-container">
+            <!-- 동적으로 빈칸을 생성할 부분 -->
         </div>
 
         <input type="text" id="guess" placeholder="단어를 입력하세요" maxlength="1" autofocus>
@@ -149,7 +146,7 @@
         let attempts = 0;  // 시도 횟수
 
         // 초기 화면 설정
-        const blanks = document.querySelectorAll('.blank');
+        const wordContainer = document.getElementById('word-container');
         const inputField = document.getElementById('guess');
         const messageDiv = document.getElementById('message');
         const hintDiv = document.getElementById('hint');
@@ -159,8 +156,16 @@
         function startRound() {
             // 현재 라운드 단어 가져오기
             currentWord = words[currentRound];
-            // 빈칸 초기화
-            blanks.forEach(blank => blank.textContent = '');
+            // 단어의 길이에 맞게 빈칸 생성
+            wordContainer.innerHTML = ''; // 이전 라운드에서의 빈칸들 제거
+
+            for (let i = 0; i < currentWord.length; i++) {
+                const blank = document.createElement('span');
+                blank.classList.add('blank');
+                blank.textContent = '_';  // 각 빈칸에 '_' 문자 추가
+                wordContainer.appendChild(blank);
+            }
+
             attempts = 0;
             // 힌트 설정
             hintDiv.textContent = hints[currentRound];
@@ -181,8 +186,9 @@
             
             if (currentWord.includes(userGuess)) {
                 // 정답이 맞을 경우
+                const blanks = document.querySelectorAll('.blank');
                 for (let i = 0; i < currentWord.length; i++) {
-                    if (currentWord[i] === userGuess && blanks[i].textContent === '') {
+                    if (currentWord[i] === userGuess && blanks[i].textContent === '_') {
                         blanks[i].textContent = userGuess; // 빈칸에 맞는 글자 넣기
                     }
                 }
@@ -194,7 +200,8 @@
             }
 
             // 게임 끝났는지 체크
-            if ([...blanks].every(blank => blank.textContent !== '')) {
+            const blanks = document.querySelectorAll('.blank');
+            if ([...blanks].every(blank => blank.textContent !== '_')) {
                 messageDiv.textContent = "정답을 맞췄어요! 다음 라운드로 진행합니다.";
                 // 라운드가 5라운드인지 체크
                 if (currentRound < 4) {
